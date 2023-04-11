@@ -16,15 +16,22 @@
 #define RMW_DDS_COMMON__TIME_UTILS_HPP_
 
 #include "rmw/types.h"
-
 #include "rmw_dds_common/visibility_control.h"
 
-namespace rmw_dds_common
-{
+namespace rmw_dds_common {
 
+/// 检查rmw_time_t的64位秒/纳秒值是否超过32位限制，并进行相应调整
 /// Check if an rmw_time_t's 64-bit seconds/nanoseconds values exceed
 /// 32-bit limits and adjust accordingly
-/*
+/**
+ * DDS标准将Time_t和Duration_t类型指定为
+ * "long sec" 和 "unsigned long nanosec"，而IDL到C++11映射
+ * 规定long和unsigned long的C++类型分别映射到
+ * int32_t 和 uint32_t。因此，在将rmw_time_t转换为
+ * DDS Duration_t 或 Time_t 时，64位秒和纳秒值将被截断为32位。
+ * 此函数将秒值限制为有符号的32位最大值，并尝试将多余的秒数移动到纳秒字段。
+ * 如果生成的纳秒值对于无符号32位来说太大，则会饱和并发出警告。
+ *
  * The DDS standard specifies the Time_t and Duration_t types with
  * "long sec" and "unsigned long nanosec", and the IDL to C++11 mapping
  * states that the C++ types for long and unsigned long are mapped
@@ -36,12 +43,13 @@ namespace rmw_dds_common
  * nanoseconds value is too large for unsigned 32-bits it saturates
  * and issues a warning.
  *
+ * \param[in] time 要转换的时间
  * \param[in] time to convert
+ * \return 转换后的时间值
  * \return converted time value
  */
 RMW_DDS_COMMON_PUBLIC
-rmw_time_t
-clamp_rmw_time_to_dds_time(const rmw_time_t & time);
+rmw_time_t clamp_rmw_time_to_dds_time(const rmw_time_t& time);
 
 }  // namespace rmw_dds_common
 
