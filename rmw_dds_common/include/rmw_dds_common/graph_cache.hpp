@@ -47,8 +47,8 @@ struct ParticipantInfo;
 class GraphCache {
   // 声明一个友元函数，用于输出 GraphCache 的内容到输出流中 (Declare a friend function to output the
   // content of GraphCache to the output stream)
-  friend RMW_DDS_COMMON_PUBLIC std::ostream &operator<<(std::ostream &ostream,
-                                                        const GraphCache &topic_cache);
+  friend RMW_DDS_COMMON_PUBLIC std::ostream &operator<<(
+      std::ostream &ostream, const GraphCache &topic_cache);
 
 public:
   /// 设置一个回调函数，在对象状态改变时会被调用 (Set a callback that will be called when the state
@@ -81,28 +81,21 @@ public:
   /// Add a data writer based on discovery.
   /**
    * \param writer_gid 数据写入器的 GUID。
-   * \param writer_gid GUID of the data writer.
    * \param topic_name 此数据写入器的 DDS 主题名称。
-   * \param topic_name Name of the DDS topic for this data writer.
    * \param type_name 此数据写入器的 DDS 主题类型名称。
-   * \param type_name Type name of the DDS topic for this data writer.
    * \param type_hash 主题类型描述的哈希值。
-   * \param type_hash Hash of the description of the topic type.
    * \param participant_gid 参与者的 GUID。
-   * \param participant_gid GUID of the participant.
    * \param qos 数据写入器的 QoS 配置文件。
-   * \param qos QoS profile of the data writer.
    * \return 如果缓存已更新，则返回 `true`，如果数据写入器已存在，则返回 `false`。
-   * \return `true` if the cache was updated, `false` if the data writer
-   *   was already present.
    */
   RMW_DDS_COMMON_PUBLIC
-  bool add_writer(const rmw_gid_t &writer_gid,
-                  const std::string &topic_name,
-                  const std::string &type_name,
-                  const rosidl_type_hash_t &type_hash,
-                  const rmw_gid_t &participant_gid,
-                  const rmw_qos_profile_t &qos);
+  bool add_writer(
+      const rmw_gid_t &writer_gid,
+      const std::string &topic_name,
+      const std::string &type_name,
+      const rosidl_type_hash_t &type_hash,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos);
 
   /// 基于发现添加数据写入器。
   /// Add a data writer based on discovery.
@@ -112,11 +105,12 @@ public:
    */
   RMW_DDS_COMMON_PUBLIC
   RCUTILS_DEPRECATED_WITH_MSG("Migrate to using the version of this function taking a type hash.")
-  bool add_writer(const rmw_gid_t &writer_gid,
-                  const std::string &topic_name,
-                  const std::string &type_name,
-                  const rmw_gid_t &participant_gid,
-                  const rmw_qos_profile_t &qos);
+  bool add_writer(
+      const rmw_gid_t &writer_gid,
+      const std::string &topic_name,
+      const std::string &type_name,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos);
 
   /// 添加一个基于发现的数据读取器。
   /**
@@ -128,40 +122,27 @@ public:
    * \param qos 数据读取器的QoS配置文件。
    * \return 如果缓存已更新，则为`true`；如果数据读取器已存在，则为`false`。
    */
-  /// Add a data reader based on discovery.
-  /**
-   * \param reader_gid GUID of the The data reader.
-   * \param topic_name Name of the DDS topic for this data reader.
-   * \param type_name Type name of the DDS topic for this data reader.
-   * \param type_hash Hash of the description of the topic type.
-   * \param participant_gid GUID of the participant.
-   * \param qos QoS profile of the data reader.
-   * \return `true` if the cache was updated, `false` if the data reader
-   *   was already present.
-   */
   RMW_DDS_COMMON_PUBLIC
-  bool add_reader(const rmw_gid_t &reader_gid,
-                  const std::string &topic_name,
-                  const std::string &type_name,
-                  const rosidl_type_hash_t &type_hash,
-                  const rmw_gid_t &participant_gid,
-                  const rmw_qos_profile_t &qos);
+  bool add_reader(
+      const rmw_gid_t &reader_gid,
+      const std::string &topic_name,
+      const std::string &type_name,
+      const rosidl_type_hash_t &type_hash,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos);
 
   /// 添加一个基于发现的数据读取器。
   /**
    * 请参阅具有rosidl_type_hash_t的add_reader，其其他参数与这些匹配。
    */
-  /// Add a data reader based on discovery.
-  /**
-   * See add_reader with rosidl_type_hash_t, whose other parameters match these.
-   */
   RMW_DDS_COMMON_PUBLIC
   RCUTILS_DEPRECATED_WITH_MSG("Migrate to using the version of this function taking a type hash.")
-  bool add_reader(const rmw_gid_t &reader_gid,
-                  const std::string &topic_name,
-                  const std::string &type_name,
-                  const rmw_gid_t &participant_gid,
-                  const rmw_qos_profile_t &qos);
+  bool add_reader(
+      const rmw_gid_t &reader_gid,
+      const std::string &topic_name,
+      const std::string &type_name,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos);
 
   /// 添加一个数据读取器或写入器。
   /**
@@ -174,26 +155,15 @@ public:
    * \param is_reader 实体是数据读取器还是写入器。
    * \return 如果缓存已更新，则为`true`；如果实体已存在，则为`false`。
    */
-  /// Add a data reader or writer.
-  /**
-   * \param gid GUID of the entity.
-   * \param topic_name Name of the DDS topic for this data reader.
-   * \param type_name Type name of the DDS topic for this entity
-   * \param type_hash Hash of the description of the topic type.
-   * \param participant_gid GUID of the participant.
-   * \param qos QoS profile of the entity.
-   * \param is_reader Whether the entity is a data reader or a writer.
-   * \return `true` if the cache was updated, `false` if the entity
-   *   was already present.
-   */
   RMW_DDS_COMMON_PUBLIC
-  bool add_entity(const rmw_gid_t &gid,
-                  const std::string &topic_name,
-                  const std::string &type_name,
-                  const rosidl_type_hash_t &type_hash,
-                  const rmw_gid_t &participant_gid,
-                  const rmw_qos_profile_t &qos,
-                  bool is_reader);
+  bool add_entity(
+      const rmw_gid_t &gid,
+      const std::string &topic_name,
+      const std::string &type_name,
+      const rosidl_type_hash_t &type_hash,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos,
+      bool is_reader);
 
   /// 添加数据读取器或写入器。 (Add a data reader or writer.)
   /**
@@ -202,12 +172,13 @@ public:
    */
   RMW_DDS_COMMON_PUBLIC
   RCUTILS_DEPRECATED_WITH_MSG("Migrate to using the version of this function taking a type hash.")
-  bool add_entity(const rmw_gid_t &gid,
-                  const std::string &topic_name,
-                  const std::string &type_name,
-                  const rmw_gid_t &participant_gid,
-                  const rmw_qos_profile_t &qos,
-                  bool is_reader);
+  bool add_entity(
+      const rmw_gid_t &gid,
+      const std::string &topic_name,
+      const std::string &type_name,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos,
+      bool is_reader);
 
   /// 移除数据写入器。 (Remove a data writer.)
   /**
@@ -303,9 +274,10 @@ public:
    * \return Message to update other caches.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_dds_common::msg::ParticipantEntitiesInfo add_node(const rmw_gid_t &participant_gid,
-                                                        const std::string &node_name,
-                                                        const std::string &node_namespace);
+  rmw_dds_common::msg::ParticipantEntitiesInfo add_node(
+      const rmw_gid_t &participant_gid,
+      const std::string &node_name,
+      const std::string &node_namespace);
 
   /// 从图中移除一个节点。
   /// Remove a node from the graph.
@@ -321,9 +293,10 @@ public:
    * \return Message to update other caches.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_dds_common::msg::ParticipantEntitiesInfo remove_node(const rmw_gid_t &participant_gid,
-                                                           const std::string &node_name,
-                                                           const std::string &node_namespace);
+  rmw_dds_common::msg::ParticipantEntitiesInfo remove_node(
+      const rmw_gid_t &participant_gid,
+      const std::string &node_name,
+      const std::string &node_namespace);
 
   /// 将数据写入器与节点关联。
   /// Associate a data writer with a node.
@@ -341,10 +314,11 @@ public:
    * \return Message to update other caches.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_dds_common::msg::ParticipantEntitiesInfo associate_writer(const rmw_gid_t &writer_gid,
-                                                                const rmw_gid_t &participant_gid,
-                                                                const std::string &node_name,
-                                                                const std::string &node_namespace);
+  rmw_dds_common::msg::ParticipantEntitiesInfo associate_writer(
+      const rmw_gid_t &writer_gid,
+      const rmw_gid_t &participant_gid,
+      const std::string &node_name,
+      const std::string &node_namespace);
 
   /// 将数据写入器与节点解除关联。
   /// Dissociate a data writer from a node.
@@ -362,10 +336,11 @@ public:
    * \return Message to update other caches.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_dds_common::msg::ParticipantEntitiesInfo dissociate_writer(const rmw_gid_t &writer_gid,
-                                                                 const rmw_gid_t &participant_gid,
-                                                                 const std::string &node_name,
-                                                                 const std::string &node_namespace);
+  rmw_dds_common::msg::ParticipantEntitiesInfo dissociate_writer(
+      const rmw_gid_t &writer_gid,
+      const rmw_gid_t &participant_gid,
+      const std::string &node_name,
+      const std::string &node_namespace);
 
   /// 将数据读取器与节点关联。
   /// Associate a data reader with a node.
@@ -383,10 +358,11 @@ public:
    * \return Message to update other caches.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_dds_common::msg::ParticipantEntitiesInfo associate_reader(const rmw_gid_t &reader_gid,
-                                                                const rmw_gid_t &participant_gid,
-                                                                const std::string &node_name,
-                                                                const std::string &node_namespace);
+  rmw_dds_common::msg::ParticipantEntitiesInfo associate_reader(
+      const rmw_gid_t &reader_gid,
+      const rmw_gid_t &participant_gid,
+      const std::string &node_name,
+      const std::string &node_namespace);
 
   /// 将数据读取器与节点解除关联。
   /// Dissociate a data reader from a node.
@@ -404,10 +380,11 @@ public:
    * \return Message to update other caches.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_dds_common::msg::ParticipantEntitiesInfo dissociate_reader(const rmw_gid_t &reader_gid,
-                                                                 const rmw_gid_t &participant_gid,
-                                                                 const std::string &node_name,
-                                                                 const std::string &node_namespace);
+  rmw_dds_common::msg::ParticipantEntitiesInfo dissociate_reader(
+      const rmw_gid_t &reader_gid,
+      const rmw_gid_t &participant_gid,
+      const std::string &node_name,
+      const std::string &node_namespace);
 
   /**
    * @}
@@ -481,10 +458,11 @@ public:
    * \return RMW_RET_OK.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_ret_t get_writers_info_by_topic(const std::string &topic_name,
-                                      DemangleFunctionT demangle_type,
-                                      rcutils_allocator_t *allocator,
-                                      rmw_topic_endpoint_info_array_t *endpoints_info) const;
+  rmw_ret_t get_writers_info_by_topic(
+      const std::string &topic_name,
+      DemangleFunctionT demangle_type,
+      rcutils_allocator_t *allocator,
+      rmw_topic_endpoint_info_array_t *endpoints_info) const;
 
   /// 获取一个数组，其中包含有关 DDS 主题的数据读取器的信息。
   /// Get an array with information about the data readers for a DDS topic.
@@ -506,10 +484,11 @@ public:
    * \return RMW_RET_OK.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_ret_t get_readers_info_by_topic(const std::string &topic_name,
-                                      DemangleFunctionT demangle_type,
-                                      rcutils_allocator_t *allocator,
-                                      rmw_topic_endpoint_info_array_t *endpoints_info) const;
+  rmw_ret_t get_readers_info_by_topic(
+      const std::string &topic_name,
+      DemangleFunctionT demangle_type,
+      rcutils_allocator_t *allocator,
+      rmw_topic_endpoint_info_array_t *endpoints_info) const;
 
   /// 获取所有主题名称和类型。
   /// Get all topic names and types.
@@ -533,10 +512,11 @@ public:
    * \return RMW_RET_OK.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_ret_t get_names_and_types(DemangleFunctionT demangle_topic,
-                                DemangleFunctionT demangle_type,
-                                rcutils_allocator_t *allocator,
-                                rmw_names_and_types_t *topic_names_and_types) const;
+  rmw_ret_t get_names_and_types(
+      DemangleFunctionT demangle_topic,
+      DemangleFunctionT demangle_type,
+      rcutils_allocator_t *allocator,
+      rmw_names_and_types_t *topic_names_and_types) const;
 
   /// 获取与节点关联的所有数据写入器的主题名称和类型。 (Get topic names and types for all data
   /// writers associated to a node.)
@@ -557,12 +537,13 @@ public:
    * \return RMW_RET_OK.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_ret_t get_writer_names_and_types_by_node(const std::string &node_name,
-                                               const std::string &namespace_,
-                                               DemangleFunctionT demangle_topic,
-                                               DemangleFunctionT demangle_type,
-                                               rcutils_allocator_t *allocator,
-                                               rmw_names_and_types_t *topic_names_and_types) const;
+  rmw_ret_t get_writer_names_and_types_by_node(
+      const std::string &node_name,
+      const std::string &namespace_,
+      DemangleFunctionT demangle_topic,
+      DemangleFunctionT demangle_type,
+      rcutils_allocator_t *allocator,
+      rmw_names_and_types_t *topic_names_and_types) const;
 
   /// 获取与节点关联的所有数据读取器的主题名称和类型。 (Get the topic names and types for all data
   /// readers associated to a node.)
@@ -583,12 +564,13 @@ public:
    * \return RMW_RET_OK.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_ret_t get_reader_names_and_types_by_node(const std::string &node_name,
-                                               const std::string &namespace_,
-                                               DemangleFunctionT demangle_topic,
-                                               DemangleFunctionT demangle_type,
-                                               rcutils_allocator_t *allocator,
-                                               rmw_names_and_types_t *topic_names_and_types) const;
+  rmw_ret_t get_reader_names_and_types_by_node(
+      const std::string &node_name,
+      const std::string &namespace_,
+      DemangleFunctionT demangle_topic,
+      DemangleFunctionT demangle_type,
+      rcutils_allocator_t *allocator,
+      rmw_names_and_types_t *topic_names_and_types) const;
 
   /// 获取已发现节点的数量。 (Get the number of nodes that have been discovered.)
   RMW_DDS_COMMON_PUBLIC
@@ -622,10 +604,11 @@ public:
    * \return RMW_RET_OK.
    */
   RMW_DDS_COMMON_PUBLIC
-  rmw_ret_t get_node_names(rcutils_string_array_t *node_names,
-                           rcutils_string_array_t *node_namespaces,
-                           rcutils_string_array_t *enclaves,
-                           rcutils_allocator_t *allocator) const;
+  rmw_ret_t get_node_names(
+      rcutils_string_array_t *node_names,
+      rcutils_string_array_t *node_namespaces,
+      rcutils_string_array_t *enclaves,
+      rcutils_allocator_t *allocator) const;
 
   /**
    * @}
@@ -687,35 +670,24 @@ struct ParticipantInfo {
 };
 
 /// 代表端点（数据读取器或写入器）发现数据的结构
-/// Structure representing the discovery data of an endpoint (data reader or writer)
 struct EntityInfo {
   /// 主题名称
-  /// Topic name
   std::string topic_name;
-
   /// 主题类型名称
-  /// Topic type name
   std::string topic_type;
-
   /// 主题类型哈希
-  /// Topic type hash
   rosidl_type_hash_t topic_type_hash;
-
   /// 参与者 gid
-  /// Participant gid
   rmw_gid_t participant_gid;
-
   /// 主题的服务质量
-  /// Quality of service of the topic
   rmw_qos_profile_t qos;
-
   /// 简单构造函数
-  /// Simple constructor
-  EntityInfo(const std::string &topic_name,
-             const std::string &topic_type,
-             const rosidl_type_hash_t &topic_type_hash,
-             const rmw_gid_t &participant_gid,
-             const rmw_qos_profile_t &qos)
+  EntityInfo(
+      const std::string &topic_name,
+      const std::string &topic_type,
+      const rosidl_type_hash_t &topic_type_hash,
+      const rmw_gid_t &participant_gid,
+      const rmw_qos_profile_t &qos)
       : topic_name(topic_name),
         topic_type(topic_type),
         topic_type_hash(topic_type_hash),

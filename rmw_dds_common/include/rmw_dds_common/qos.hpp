@@ -25,52 +25,49 @@
 
 namespace rmw_dds_common {
 
-/// 检查两个 QoS 配置文件是否兼容（Check if two QoS profiles are compatible）
+/// 检查两个 QoS 配置文件是否兼容(Check if two QoS profiles are compatible)
 /**
  * 如果使用这些 QoS 策略的发布者和订阅者可以相互通信，则两个 QoS 配置文件是兼容的。
  * (Two QoS profiles are compatible if a publisher and subscription
  * using the QoS policies can communicate with each other.)
  *
  * 此函数实现了 rmw API \ref rmw_qos_profile_check_compatible()。
- * (This implements the rmw API \ref rmw_qos_profile_check_compatible().)
  * 有关更多信息，请参阅 \ref rmw_qos_profile_check_compatible()。
+ * (This implements the rmw API \ref rmw_qos_profile_check_compatible().)
  * (See \ref rmw_qos_profile_check_compatible() for more information.)
  *
- * \param[in] publisher_qos: 用于发布者的 QoS 配置文件。（The QoS profile used for a publisher.）
- * \param[in] subscription_qos: 用于订阅者的 QoS 配置文件。（The QoS profile used for a
- *subscription.）
+ * \param[in] publisher_qos: 用于发布者的 QoS 配置文件。(The QoS profile used for a publisher.)
+ * \param[in] subscription_qos: 用于订阅者的 QoS 配置文件。(The QoS profile used for a
+ *subscription.)
  * \param[out] compatibility: 如果 QoS 配置文件兼容，则为 `RMW_QOS_COMPATIBILITY_OK`，或
- *   （`RMW_QOS_COMPATIBILITY_OK` if the QoS profiles are compatible, or）
  *   如果 QoS 配置文件可能兼容，则为 `RMW_QOS_COMPATIBILITY_WARNING`，或
- *   （`RMW_QOS_COMPATIBILITY_WARNING` if the QoS profiles might be compatible, or）
  *   如果 QoS 配置文件不兼容，则为 `RMW_QOS_COMPATIBILITY_ERROR`。
- *   （`RMW_QOS_COMPATIBILITY_ERROR` if the QoS profiles are not compatible.）
+ *   (`RMW_QOS_COMPATIBILITY_OK` if the QoS profiles are compatible, or)
+ *   (`RMW_QOS_COMPATIBILITY_WARNING` if the QoS profiles might be compatible, or)
+ *   (`RMW_QOS_COMPATIBILITY_ERROR` if the QoS profiles are not compatible.)
  * \param[out] reason: QoS 不兼容或可能不兼容的详细原因。
- *   （A detailed reason for a QoS incompatibility or potential incompatibility.）
  *   必须由调用者预先分配。
- *   （Must be pre-allocated by the caller.）
  *   如果不需要原因信息，此参数是可选的，可以将其设置为 `nullptr`。
- *   （This parameter is optional and may be set to `nullptr` if the reason information is not
- *   desired.）
+ *   (A detailed reason for a QoS incompatibility or potential incompatibility.)
+ *   (Must be pre-allocated by the caller.)
+ *   (This parameter is optional and may be set to `nullptr` if the reason information is not
+ *   desired.)
  * \param[in] reason_size: 如果提供了字符串缓冲区 `reason`，则为 `reason` 的大小。
- *   （Size of the string buffer `reason`, if one is provided.）
  *   如果 `reason` 为 `nullptr`，则此参数必须为零。
- *   （If `reason` is `nullptr`, then this parameter must be zero.）
+ *   (Size of the string buffer `reason`, if one is provided.)
+ *   (If `reason` is `nullptr`, then this parameter must be zero.)
  * \return 如果检查成功，则返回 `RMW_RET_OK`，或
- *   （`RMW_RET_OK` if the check was successful, or）
  * \return 如果 `compatiblity` 为 `nullptr`，则返回 `RMW_RET_INVALID_ARGUMENT`，或
- *   （`RMW_RET_INVALID_ARGUMENT` if `compatiblity` is `nullptr`, or）
  * \return 如果 `reason` 为 `nullptr` 且 `reason_size` 不为零，则返回 `RMW_RET_INVALID_ARGUMENT`，或
- *   （`RMW_RET_INVALID_ARGUMENT` if `reason` is `nullptr` and  `reason_size` is not zero, or）
  * \return 如果出现意外错误，则返回 `RMW_RET_ERROR`。
- *   （`RMW_RET_ERROR` if there is an unexpected error.）
  */
 RMW_DDS_COMMON_PUBLIC
-rmw_ret_t qos_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
-                                       const rmw_qos_profile_t subscription_qos,
-                                       rmw_qos_compatibility_type_t *compatibility,
-                                       char *reason,
-                                       size_t reason_size);
+rmw_ret_t qos_profile_check_compatible(
+    const rmw_qos_profile_t publisher_qos,
+    const rmw_qos_profile_t subscription_qos,
+    rmw_qos_compatibility_type_t *compatibility,
+    char *reason,
+    size_t reason_size);
 
 /// 获取订阅的最佳可用 QoS 策略。
 /// Get the best available QoS policies for a subscription.
@@ -184,11 +181,12 @@ rmw_ret_t qos_profile_get_best_available_for_publisher(
 
 /// 签名匹配 rmw_get_publishers_info_by_topic 和 rmw_get_subscriptions_info_by_topic
 /// Signature matching rmw_get_publishers_info_by_topic and rmw_get_subscriptions_info_by_topic
-using GetEndpointInfoByTopicFunction = std::function<rmw_ret_t(const rmw_node_t *,
-                                                               rcutils_allocator_t *,
-                                                               const char *,
-                                                               bool,
-                                                               rmw_topic_endpoint_info_array_t *)>;
+using GetEndpointInfoByTopicFunction = std::function<rmw_ret_t(
+    const rmw_node_t *,
+    rcutils_allocator_t *,
+    const char *,
+    bool,
+    rmw_topic_endpoint_info_array_t *)>;
 
 /// 更新订阅的 QoS 配置文件，使其与发现的发布者兼容。
 /// Update a subscription QoS profile so that it is compatible with discovered publishers.
@@ -323,9 +321,8 @@ rmw_qos_profile_t qos_profile_update_best_available_for_services(
  * \return RMW_RET_ERROR if typehash key found, but value could not be parsed
  */
 RMW_DDS_COMMON_PUBLIC
-rmw_ret_t parse_type_hash_from_user_data(const uint8_t *user_data,
-                                         size_t user_data_size,
-                                         rosidl_type_hash_t &type_hash_out);
+rmw_ret_t parse_type_hash_from_user_data(
+    const uint8_t *user_data, size_t user_data_size, rosidl_type_hash_t &type_hash_out);
 
 /// 将类型哈希编码为 "typehash=hash_string;" 以在 USER_DATA QoS 中使用
 /// Encode type hash as "typehash=hash_string;" for use in USER_DATA QoS
@@ -343,8 +340,8 @@ rmw_ret_t parse_type_hash_from_user_data(const uint8_t *user_data,
  * \return RMW_RET_BAD_ALLOC if memory allocation fails
  */
 RMW_DDS_COMMON_PUBLIC
-rmw_ret_t encode_type_hash_for_user_data_qos(const rosidl_type_hash_t &type_hash,
-                                             std::string &string_out);
+rmw_ret_t encode_type_hash_for_user_data_qos(
+    const rosidl_type_hash_t &type_hash, std::string &string_out);
 
 }  // namespace rmw_dds_common
 

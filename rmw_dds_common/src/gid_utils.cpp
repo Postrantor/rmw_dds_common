@@ -35,8 +35,8 @@ bool Compare_rmw_gid_t::operator()(const rmw_gid_t &lhs, const rmw_gid_t &rhs) c
   // 使用 std::lexicographical_compare 比较两个 rmw_gid_t 对象的 data 数组的字典序大小 (Use
   // std::lexicographical_compare to compare the lexicographical order of the data arrays of two
   // rmw_gid_t objects)
-  return std::lexicographical_compare(lhs.data, lhs.data + RMW_GID_STORAGE_SIZE, rhs.data,
-                                      rhs.data + RMW_GID_STORAGE_SIZE);
+  return std::lexicographical_compare(
+      lhs.data, lhs.data + RMW_GID_STORAGE_SIZE, rhs.data, rhs.data + RMW_GID_STORAGE_SIZE);
 }
 
 /**
@@ -73,8 +73,9 @@ std::ostream &rmw_dds_common::operator<<(std::ostream &ostream, const rmw_gid_t 
 bool rmw_dds_common::operator==(const rmw_gid_t &lhs, const rmw_gid_t &rhs) {
   // 使用 std::memcmp 比较两个 rmw_gid_t 对象的 data 数组是否相等 (Use std::memcmp to compare
   // whether the data arrays of two rmw_gid_t objects are equal)
-  return std::memcmp(reinterpret_cast<const void *>(lhs.data),
-                     reinterpret_cast<const void *>(rhs.data), RMW_GID_STORAGE_SIZE) == 0;
+  return std::memcmp(
+             reinterpret_cast<const void *>(lhs.data), reinterpret_cast<const void *>(rhs.data),
+             RMW_GID_STORAGE_SIZE) == 0;
 }
 
 /**

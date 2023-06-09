@@ -32,9 +32,10 @@ namespace rmw_dds_common {
  * @return bool 如果成功获取所有必需的安全文件，则返回 true，否则返回 false (Return true if all
  * required security files are successfully obtained, otherwise return false)
  */
-bool get_security_files(const std::string& prefix,
-                        const std::string& secure_root,
-                        std::unordered_map<std::string, std::string>& result) {
+bool get_security_files(
+    const std::string& prefix,
+    const std::string& secure_root,
+    std::unordered_map<std::string, std::string>& result) {
   // 必需的安全文件 (Required security files)
   const std::unordered_map<std::string, std::string> required_files{
       {"IDENTITY_CA", "identity_ca.cert.pem"},

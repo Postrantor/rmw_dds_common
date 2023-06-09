@@ -61,9 +61,10 @@ rmw_time_t rmw_dds_common::clamp_rmw_time_to_dds_time(const rmw_time_t& time) {
   // "saturated" value, i.e., sec_to_ns - 1)
   if (overflow_nsec || overflow_sec) {
     t.nsec = sec_to_ns - 1;
-    RCUTILS_LOG_DEBUG_NAMED("rmw_dds_common",
-                            "rmw_time_t length cannot be represented by DDS, truncated at "
-                            "INT_MAX seconds + (10^9 - 1) nanoseconds");
+    RCUTILS_LOG_DEBUG_NAMED(
+        "rmw_dds_common",
+        "rmw_time_t length cannot be represented by DDS, truncated at "
+        "INT_MAX seconds + (10^9 - 1) nanoseconds");
   } else {
     t.nsec = t.nsec - ns_sec_adjust * sec_to_ns;
   }

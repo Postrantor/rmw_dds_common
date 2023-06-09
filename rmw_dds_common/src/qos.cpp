@@ -30,6 +30,7 @@
 
 namespace rmw_dds_common {
 
+// 比较两个 rmw_time_t 对象是否相等
 /**
  * @brief 比较两个 rmw_time_t 对象是否相等
  * @param t1 第一个 rmw_time_t 对象
@@ -47,6 +48,7 @@ static bool operator==(rmw_time_t t1, rmw_time_t t2) {
   return t1.sec == t2.sec && t1.nsec == t2.nsec;
 }
 
+// 比较两个 rmw_time_t 对象是否不相等
 /**
  * @brief 比较两个 rmw_time_t 对象是否不相等
  * @param t1 第一个 rmw_time_t 对象
@@ -60,6 +62,7 @@ static bool operator==(rmw_time_t t1, rmw_time_t t2) {
  */
 static bool operator!=(rmw_time_t t1, rmw_time_t t2) { return !(t1 == t2); }
 
+// 比较第一个 rmw_time_t 对象是否小于第二个 rmw_time_t 对象
 /**
  * @brief 比较第一个 rmw_time_t 对象是否小于第二个 rmw_time_t 对象
  * @param t1 第一个 rmw_time_t 对象
@@ -108,6 +111,7 @@ static const rmw_time_t liveliness_lease_duration_default =
 static const rmw_time_t liveliness_lease_duration_best_available =
     RMW_QOS_LIVELINESS_LEASE_DURATION_BEST_AVAILABLE;
 
+// 将格式化字符串添加到缓冲区中（Append a formatted string to the buffer）
 /**
  * @brief 将格式化字符串添加到缓冲区中（Append a formatted string to the buffer）
  *
@@ -151,6 +155,8 @@ static rmw_ret_t _append_to_buffer(char* buffer, size_t buffer_size, const char*
   return RMW_RET_OK;
 }
 
+// 检查发布者和订阅者的 QoS 配置是否兼容 (Check if the publisher and subscriber QoS configurations
+// are compatible)
 /**
  * @brief 检查发布者和订阅者的 QoS 配置是否兼容 (Check if the publisher and subscriber QoS
  * configurations are compatible)
@@ -163,11 +169,12 @@ static rmw_ret_t _append_to_buffer(char* buffer, size_t buffer_size, const char*
  * @param[in] reason_size 原因缓冲区的大小 (Size of the reason buffer)
  * @return rmw_ret_t 返回操作状态 (Return operation status)
  */
-rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
-                                      const rmw_qos_profile_t subscription_qos,
-                                      rmw_qos_compatibility_type_t* compatibility,
-                                      char* reason,
-                                      size_t reason_size) {
+rmw_ret_t qos_profile_check_compatible(
+    const rmw_qos_profile_t publisher_qos,
+    const rmw_qos_profile_t subscription_qos,
+    rmw_qos_compatibility_type_t* compatibility,
+    char* reason,
+    size_t reason_size) {
   // 检查兼容性参数是否为空 (Check if the compatibility parameter is null)
   if (!compatibility) {
     // 设置错误消息 (Set error message)
@@ -176,9 +183,9 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
     return RMW_RET_INVALID_ARGUMENT;
   }
 
+  // 当 reason 参数为空且 reason_size 不为零时设置错误消息
+  // Set error message when reason parameter is null and reason_size is not zero
   if (!reason && reason_size != 0u) {
-    // 当 reason 参数为空且 reason_size 不为零时设置错误消息
-    // Set error message when reason parameter is null and reason_size is not zero
     RMW_SET_ERROR_MSG("reason parameter is null, but reason_size parameter is not zero");
     return RMW_RET_INVALID_ARGUMENT;
   }
@@ -363,8 +370,9 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
       if (RMW_RET_OK != append_ret) {
         return append_ret;
       }
-    } else if (pub_reliability_unknown &&  // NOLINT
-               subscription_qos.reliability == RMW_QOS_POLICY_RELIABILITY_RELIABLE) {
+    } else if (
+        pub_reliability_unknown &&  // NOLINT
+        subscription_qos.reliability == RMW_QOS_POLICY_RELIABILITY_RELIABLE) {
       // 发布者的可靠性未知，订阅者的可靠性为可靠 Reliability for publisher is unknown and
       // subscription is reliable
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
@@ -374,8 +382,9 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
       if (RMW_RET_OK != append_ret) {
         return append_ret;
       }
-    } else if (publisher_qos.reliability == RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT &&  // NOLINT
-               sub_reliability_unknown) {
+    } else if (
+        publisher_qos.reliability == RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT &&  // NOLINT
+        sub_reliability_unknown) {
       // 发布者的可靠性为尽力而为，订阅者的可靠性未知 Reliability for publisher is best effort and
       // subscription is unknown
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
@@ -391,15 +400,16 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
     if (pub_durability_unknown && sub_durability_unknown) {
       // 发布者和订阅者的持久性均未知 Durability for publisher and subscription is unknown
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
-      rmw_ret_t append_ret =
-          _append_to_buffer(reason, reason_size,
-                            "WARNING: Publisher durabilty is %s and subscription durability is %s;",
-                            pub_durability_str, sub_durability_str);
+      rmw_ret_t append_ret = _append_to_buffer(
+          reason, reason_size,
+          "WARNING: Publisher durabilty is %s and subscription durability is %s;",
+          pub_durability_str, sub_durability_str);
       if (RMW_RET_OK != append_ret) {
         return append_ret;
       }
-    } else if (pub_durability_unknown &&  // NOLINT
-               subscription_qos.durability == RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL) {
+    } else if (
+        pub_durability_unknown &&  // NOLINT
+        subscription_qos.durability == RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL) {
       // 发布者的持久性未知，订阅者的持久性为瞬态本地 Durability for publisher is unknown and
       // subscription is transient local
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
@@ -409,14 +419,15 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
       if (RMW_RET_OK != ret) {
         return ret;
       }
-    } else if (publisher_qos.durability == RMW_QOS_POLICY_DURABILITY_VOLATILE &&  // NOLINT
-               sub_durability_unknown) {
+    } else if (
+        publisher_qos.durability == RMW_QOS_POLICY_DURABILITY_VOLATILE &&  // NOLINT
+        sub_durability_unknown) {
       // 发布者的持久性为易失，订阅者的持久性未知 Durability for publisher is volatile and
       // subscription is unknown
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
-      rmw_ret_t ret = _append_to_buffer(reason, reason_size,
-                                        "WARNING: Volatile publisher, but subscription is %s;",
-                                        sub_durability_str);
+      rmw_ret_t ret = _append_to_buffer(
+          reason, reason_size, "WARNING: Volatile publisher, but subscription is %s;",
+          sub_durability_str);
       if (RMW_RET_OK != ret) {
         return ret;
       }
@@ -428,15 +439,15 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
       rmw_ret_t append_ret = _append_to_buffer(
           reason, reason_size,
-          "WARNING: Publisher liveliness is %s and subscription liveliness is %s;",  // 警告：发布者活跃度为
-                                                                                     // %s，订阅者活跃度为
-                                                                                     // %s；
+          // 警告：发布者活跃度为 %s，订阅者活跃度为 %s；
+          "WARNING: Publisher liveliness is %s and subscription liveliness is %s;",
           pub_liveliness_str, sub_liveliness_str);
       if (RMW_RET_OK != append_ret) {
         return append_ret;
       }
-    } else if (pub_liveliness_unknown &&  // NOLINT
-               subscription_qos.liveliness == RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC) {
+    } else if (
+        pub_liveliness_unknown &&  // NOLINT
+        subscription_qos.liveliness == RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC) {
       // Unknown liveliness for publisher and manual by topic for subscription
       // (发布者活跃度未知且订阅者活跃度为按主题手动设置)
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
@@ -448,8 +459,9 @@ rmw_ret_t os_profile_check_compatible(const rmw_qos_profile_t publisher_qos,
       if (RMW_RET_OK != ret) {
         return ret;
       }
-    } else if (publisher_qos.liveliness == RMW_QOS_POLICY_LIVELINESS_AUTOMATIC &&  // NOLINT
-               sub_liveliness_unknown) {
+    } else if (
+        publisher_qos.liveliness == RMW_QOS_POLICY_LIVELINESS_AUTOMATIC &&  // NOLINT
+        sub_liveliness_unknown) {
       // Automatic liveliness for publisher and unknown for subscription
       // (发布者活跃度为自动且订阅者活跃度未知)
       *compatibility = RMW_QOS_COMPATIBILITY_WARNING;
@@ -740,8 +752,8 @@ rmw_ret_t qos_profile_get_best_available_for_topic_subscription(
   RMW_CHECK_ARGUMENT_FOR_NULL(topic_name, RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(qos_profile, RMW_RET_INVALID_ARGUMENT);
 
-  // 如果给定的QoS配置包含最佳可用策略，则执行以下操作 (If the given QoS profile has the best
-  // available policy, perform the following actions)
+  // 如果给定的QoS配置包含最佳可用策略，则执行以下操作
+  // (If the given QoS profile has the best available policy, perform the following actions)
   if (_qos_profile_has_best_available_policy(*qos_profile)) {
     // 获取分配器 (Get the allocator)
     rcutils_allocator_t& allocator = node->context->options.allocator;
@@ -862,9 +874,8 @@ rmw_qos_profile_t qos_profile_update_best_available_for_services(
  * @param[out] type_hash_out 解析出的类型哈希值 (Parsed type hash)
  * @return rmw_ret_t 返回操作状态 (Return operation status)
  */
-rmw_ret_t parse_type_hash_from_user_data(const uint8_t* user_data,
-                                         size_t user_data_size,
-                                         rosidl_type_hash_t& type_hash_out) {
+rmw_ret_t parse_type_hash_from_user_data(
+    const uint8_t* user_data, size_t user_data_size, rosidl_type_hash_t& type_hash_out) {
   // 检查 user_data 是否为空 (Check if user_data is NULL)
   RMW_CHECK_ARGUMENT_FOR_NULL(user_data, RMW_RET_INVALID_ARGUMENT);
 
@@ -902,8 +913,8 @@ rmw_ret_t parse_type_hash_from_user_data(const uint8_t* user_data,
  * @param[out] string_out 编码后的类型哈希字符串 (Encoded type hash string)
  * @return rmw_ret_t 返回操作状态 (Return operation status)
  */
-rmw_ret_t encode_type_hash_for_user_data_qos(const rosidl_type_hash_t& type_hash,
-                                             std::string& string_out) {
+rmw_ret_t encode_type_hash_for_user_data_qos(
+    const rosidl_type_hash_t& type_hash, std::string& string_out) {
   // 如果类型哈希版本未设置，清除输出字符串并返回成功 (If type hash version is unset, clear output
   // string and return success)
   if (type_hash.version == ROSIDL_TYPE_HASH_VERSION_UNSET) {

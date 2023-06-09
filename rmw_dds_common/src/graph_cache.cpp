@@ -78,12 +78,13 @@ void GraphCache::clear_on_change_callback() {
  *
  * @return 是否成功添加写入器 (Whether the writer was added successfully)
  */
-bool GraphCache::add_writer(const rmw_gid_t &gid,
-                            const std::string &topic_name,
-                            const std::string &type_name,
-                            const rosidl_type_hash_t &type_hash,
-                            const rmw_gid_t &participant_gid,
-                            const rmw_qos_profile_t &qos) {
+bool GraphCache::add_writer(
+    const rmw_gid_t &gid,
+    const std::string &topic_name,
+    const std::string &type_name,
+    const rosidl_type_hash_t &type_hash,
+    const rmw_gid_t &participant_gid,
+    const rmw_qos_profile_t &qos) {
   std::lock_guard<std::mutex> guard(mutex_);  // 对互斥锁进行加锁 (Lock the mutex)
   auto pair = data_writers_.emplace(  // 尝试将数据写入器插入容器中 (Try to insert the data writer
                                       // into the container)
@@ -107,16 +108,17 @@ bool GraphCache::add_writer(const rmw_gid_t &gid,
  *
  * @return 是否成功添加写入器 (Whether the writer was added successfully)
  */
-bool GraphCache::add_writer(const rmw_gid_t &gid,
-                            const std::string &topic_name,
-                            const std::string &type_name,
-                            const rmw_gid_t &participant_gid,
-                            const rmw_qos_profile_t &qos) {
+bool GraphCache::add_writer(
+    const rmw_gid_t &gid,
+    const std::string &topic_name,
+    const std::string &type_name,
+    const rmw_gid_t &participant_gid,
+    const rmw_qos_profile_t &qos) {
   // 使用 rosidl_get_zero_initialized_type_hash() 函数初始化类型哈希，并调用另一个 add_writer 函数
   // (Initialize the type hash using the rosidl_get_zero_initialized_type_hash() function and call
   // the other add_writer function)
-  return this->add_writer(gid, topic_name, type_name, rosidl_get_zero_initialized_type_hash(),
-                          participant_gid, qos);
+  return this->add_writer(
+      gid, topic_name, type_name, rosidl_get_zero_initialized_type_hash(), participant_gid, qos);
 }
 
 /**
@@ -131,12 +133,13 @@ bool GraphCache::add_writer(const rmw_gid_t &gid,
  * @return bool 添加成功返回true，否则返回false (Return true if added successfully, otherwise return
  * false)
  */
-bool GraphCache::add_reader(const rmw_gid_t &gid,
-                            const std::string &topic_name,
-                            const std::string &type_name,
-                            const rosidl_type_hash_t &type_hash,
-                            const rmw_gid_t &participant_gid,
-                            const rmw_qos_profile_t &qos) {
+bool GraphCache::add_reader(
+    const rmw_gid_t &gid,
+    const std::string &topic_name,
+    const std::string &type_name,
+    const rosidl_type_hash_t &type_hash,
+    const rmw_gid_t &participant_gid,
+    const rmw_qos_profile_t &qos) {
   // 使用互斥锁保护数据结构 (Protect data structure with a mutex lock)
   std::lock_guard<std::mutex> guard(mutex_);
   // 在data_readers_中插入新的读取器 (Insert the new reader into data_readers_)
@@ -161,14 +164,15 @@ bool GraphCache::add_reader(const rmw_gid_t &gid,
  * @return bool 添加成功返回true，否则返回false (Return true if added successfully, otherwise return
  * false)
  */
-bool GraphCache::add_reader(const rmw_gid_t &gid,
-                            const std::string &topic_name,
-                            const std::string &type_name,
-                            const rmw_gid_t &participant_gid,
-                            const rmw_qos_profile_t &qos) {
+bool GraphCache::add_reader(
+    const rmw_gid_t &gid,
+    const std::string &topic_name,
+    const std::string &type_name,
+    const rmw_gid_t &participant_gid,
+    const rmw_qos_profile_t &qos) {
   // 调用带有类型哈希的add_reader函数 (Call the add_reader function with type hash)
-  return this->add_reader(gid, topic_name, type_name, rosidl_get_zero_initialized_type_hash(),
-                          participant_gid, qos);
+  return this->add_reader(
+      gid, topic_name, type_name, rosidl_get_zero_initialized_type_hash(), participant_gid, qos);
 }
 
 /**
@@ -186,13 +190,14 @@ bool GraphCache::add_reader(const rmw_gid_t &gid,
  * @return bool 添加成功返回true，否则返回false (Return true if added successfully, otherwise return
  * false)
  */
-bool GraphCache::add_entity(const rmw_gid_t &gid,
-                            const std::string &topic_name,
-                            const std::string &type_name,
-                            const rosidl_type_hash_t &type_hash,
-                            const rmw_gid_t &participant_gid,
-                            const rmw_qos_profile_t &qos,
-                            bool is_reader) {
+bool GraphCache::add_entity(
+    const rmw_gid_t &gid,
+    const std::string &topic_name,
+    const std::string &type_name,
+    const rosidl_type_hash_t &type_hash,
+    const rmw_gid_t &participant_gid,
+    const rmw_qos_profile_t &qos,
+    bool is_reader) {
   // 根据is_reader参数选择添加读取器或写入器 (Choose to add a reader or writer based on the
   // is_reader parameter)
   if (is_reader) {
@@ -214,15 +219,17 @@ bool GraphCache::add_entity(const rmw_gid_t &gid,
  * @return bool 添加成功返回true，否则返回false (Return true if added successfully, otherwise return
  * false)
  */
-bool GraphCache::add_entity(const rmw_gid_t &gid,
-                            const std::string &topic_name,
-                            const std::string &type_name,
-                            const rmw_gid_t &participant_gid,
-                            const rmw_qos_profile_t &qos,
-                            bool is_reader) {
+bool GraphCache::add_entity(
+    const rmw_gid_t &gid,
+    const std::string &topic_name,
+    const std::string &type_name,
+    const rmw_gid_t &participant_gid,
+    const rmw_qos_profile_t &qos,
+    bool is_reader) {
   // 调用带有类型哈希的add_entity函数 (Call the add_entity function with type hash)
-  return this->add_entity(gid, topic_name, type_name, rosidl_get_zero_initialized_type_hash(),
-                          participant_gid, qos, is_reader);
+  return this->add_entity(
+      gid, topic_name, type_name, rosidl_get_zero_initialized_type_hash(), participant_gid, qos,
+      is_reader);
 }
 
 /**
@@ -306,8 +313,8 @@ void GraphCache::update_participant_entities(
   // create a new participant entity)
   auto it = participants_.find(gid);
   if (participants_.end() == it) {
-    auto ret = participants_.emplace(std::piecewise_construct, std::forward_as_tuple(gid),
-                                     std::forward_as_tuple());
+    auto ret = participants_.emplace(
+        std::piecewise_construct, std::forward_as_tuple(gid), std::forward_as_tuple());
     it = ret.first;
     assert(ret.second);
   }
@@ -516,12 +523,12 @@ rmw_dds_common::msg::ParticipantEntitiesInfo __modify_node_info(
   // 确保找到了参与者信息 (Ensure participant information is found)
   assert(participant_info != participant_map.end());
   // 查找节点信息 (Find node information)
-  auto node_info = std::find_if(participant_info->second.node_entities_info_seq.begin(),
-                                participant_info->second.node_entities_info_seq.end(),
-                                [&](const rmw_dds_common::msg::NodeEntitiesInfo &node_info) {
-                                  return node_info.node_name == node_name &&
-                                         node_info.node_namespace == node_namespace;
-                                });
+  auto node_info = std::find_if(
+      participant_info->second.node_entities_info_seq.begin(),
+      participant_info->second.node_entities_info_seq.end(),
+      [&](const rmw_dds_common::msg::NodeEntitiesInfo &node_info) {
+        return node_info.node_name == node_name && node_info.node_namespace == node_namespace;
+      });
   // 确保找到了节点信息 (Ensure node information is found)
   assert(node_info != participant_info->second.node_entities_info_seq.end());
 
@@ -529,8 +536,8 @@ rmw_dds_common::msg::ParticipantEntitiesInfo __modify_node_info(
   func(*node_info);
   // 创建并返回包含修改后的节点信息的消息 (Create and return a message containing the modified node
   // information)
-  return __create_participant_info_message(participant_gid,
-                                           participant_info->second.node_entities_info_seq);
+  return __create_participant_info_message(
+      participant_gid, participant_info->second.node_entities_info_seq);
 }
 
 /**
@@ -587,16 +594,16 @@ rmw_dds_common::msg::ParticipantEntitiesInfo GraphCache::dissociate_writer(
   convert_gid_to_msg(&writer_gid, &writer_gid_msg);
   // 删除写入者的全局唯一标识符 (Delete the Global Identifier of the writer)
   auto delete_writer_gid = [&](rmw_dds_common::msg::NodeEntitiesInfo &info) {
-    auto it =
-        std::find_if(info.writer_gid_seq.begin(), info.writer_gid_seq.end(),
-                     [&](const rmw_dds_common::msg::Gid &gid) { return gid == writer_gid_msg; });
+    auto it = std::find_if(
+        info.writer_gid_seq.begin(), info.writer_gid_seq.end(),
+        [&](const rmw_dds_common::msg::Gid &gid) { return gid == writer_gid_msg; });
     if (it != info.writer_gid_seq.end()) {
       info.writer_gid_seq.erase(it);
     }
   };
   // 修改节点信息并获取消息 (Modify node information and get the message)
-  auto msg = __modify_node_info(participant_gid, node_name, node_namespace, delete_writer_gid,
-                                participants_);
+  auto msg = __modify_node_info(
+      participant_gid, node_name, node_namespace, delete_writer_gid, participants_);
 
   // 调用更改回调 (Call the change callback)
   GRAPH_CACHE_CALL_ON_CHANGE_CALLBACK(this);
@@ -660,9 +667,9 @@ rmw_dds_common::msg::ParticipantEntitiesInfo GraphCache::dissociate_reader(
   // 删除读者GID的lambda函数 (Lambda function to delete the reader GID)
   auto delete_reader_gid = [&](rmw_dds_common::msg::NodeEntitiesInfo &info) {
     // 在读者GID序列中查找给定的GID (Find the given GID in the reader GID sequence)
-    auto it =
-        std::find_if(info.reader_gid_seq.begin(), info.reader_gid_seq.end(),
-                     [&](const rmw_dds_common::msg::Gid &gid) { return gid == reader_gid_msg; });
+    auto it = std::find_if(
+        info.reader_gid_seq.begin(), info.reader_gid_seq.end(),
+        [&](const rmw_dds_common::msg::Gid &gid) { return gid == reader_gid_msg; });
 
     // 如果找到了GID，则从序列中删除它 (If the GID is found, erase it from the sequence)
     if (it != info.reader_gid_seq.end()) {
@@ -671,8 +678,8 @@ rmw_dds_common::msg::ParticipantEntitiesInfo GraphCache::dissociate_reader(
   };
 
   // 修改节点信息并删除读者GID (Modify the node information and delete the reader GID)
-  auto msg = __modify_node_info(participant_gid, node_name, node_namespace, delete_reader_gid,
-                                participants_);
+  auto msg = __modify_node_info(
+      participant_gid, node_name, node_namespace, delete_reader_gid, participants_);
 
   // 调用图缓存更改回调函数 (Call the Graph Cache change callback function)
   GRAPH_CACHE_CALL_ON_CHANGE_CALLBACK(this);
@@ -695,19 +702,19 @@ rmw_dds_common::msg::ParticipantEntitiesInfo GraphCache::dissociate_reader(
  * @param[out] count The number of entities matching the topic name
  * @return RMW_RET_OK if successful, or an error code otherwise
  */
-static rmw_ret_t __get_count(const GraphCache::EntityGidToInfo &entities,
-                             std::string topic_name,
-                             size_t *count) {
+static rmw_ret_t __get_count(
+    const GraphCache::EntityGidToInfo &entities, std::string topic_name, size_t *count) {
   // 断言 count 非空
   // Assert that count is not null
   assert(count);
 
   // 计算匹配主题名称的实体数量
   // Calculate the count of entities matching the topic name
-  *count = std::count_if(entities.begin(), entities.end(),
-                         [&topic_name](const GraphCache::EntityGidToInfo::value_type &elem) {
-                           return elem.second.topic_name == topic_name;
-                         });
+  *count = std::count_if(
+      entities.begin(), entities.end(),
+      [&topic_name](const GraphCache::EntityGidToInfo::value_type &elem) {
+        return elem.second.topic_name == topic_name;
+      });
   return RMW_RET_OK;
 }
 
@@ -785,10 +792,11 @@ enum class EndpointCreator {
  * 包含名称、命名空间和端点创建者的元组 (Tuple containing name, namespace, and endpoint creator)
  */
 static std::tuple<std::string, std::string, EndpointCreator>
-__find_name_and_namespace_from_entity_gid(const GraphCache::ParticipantToNodesMap &participant_map,
-                                          rmw_gid_t participant_gid,
-                                          rmw_gid_t entity_gid,
-                                          bool is_reader) {
+__find_name_and_namespace_from_entity_gid(
+    const GraphCache::ParticipantToNodesMap &participant_map,
+    rmw_gid_t participant_gid,
+    rmw_gid_t entity_gid,
+    bool is_reader) {
   // 在参与者映射中查找给定的参与者 GID (Find the given participant GID in the participant map)
   auto it = participant_map.find(participant_gid);
   // 如果找不到参与者 GID，则返回一个空的元组 (If the participant GID is not found, return an empty
@@ -826,7 +834,6 @@ __find_name_and_namespace_from_entity_gid(const GraphCache::ParticipantToNodesMa
 using DemangleFunctionT = GraphCache::DemangleFunctionT;
 
 // 定义一个静态函数，用于通过主题获取实体信息。
-// Define a static function to get entity information by topic.
 static rmw_ret_t __get_entities_info_by_topic(
     const GraphCache::EntityGidToInfo &entities,
     const GraphCache::ParticipantToNodesMap &participant_map,
@@ -836,49 +843,43 @@ static rmw_ret_t __get_entities_info_by_topic(
     rcutils_allocator_t *allocator,
     rmw_topic_endpoint_info_array_t *endpoints_info) {
   // 断言分配器和端点信息指针不为空。
-  // Assert that the allocator and endpoint information pointers are not null.
   assert(allocator);
   assert(endpoints_info);
 
   // 如果实体大小为0，则返回 RMW_RET_OK。
-  // If the size of the entities is 0, return RMW_RET_OK.
   if (0u == entities.size()) {
     return RMW_RET_OK;
   }
 
   // 计算与给定主题名称匹配的实体数量。
-  // Count the number of entities that match the given topic name.
-  size_t size = std::count_if(entities.begin(), entities.end(),
-                              [&topic_name](const GraphCache::EntityGidToInfo::value_type &item) {
-                                return item.second.topic_name == topic_name;
-                              });
+  size_t size = std::count_if(
+      entities.begin(), entities.end(),
+      [&topic_name](const GraphCache::EntityGidToInfo::value_type &item) {
+        return item.second.topic_name == topic_name;
+      });
   // 如果实体数量为0，则返回 RMW_RET_OK。
-  // If the number of entities is 0, return RMW_RET_OK.
   if (0u == size) {
     return RMW_RET_OK;
   }
 
   // 使用指定的分配器和大小初始化端点信息数组。
-  // Initialize the endpoint information array with the specified allocator and size.
   rmw_ret_t ret = rmw_topic_endpoint_info_array_init_with_size(endpoints_info, size, allocator);
   if (RMW_RET_OK != ret) {
     return ret;
   }
   // 定义一个 unique_ptr，用于在出错时删除端点信息数组。
-  // Define a unique_ptr for deleting the endpoint information array when an error occurs.
-  std::unique_ptr<rmw_topic_endpoint_info_array_t,
-                  std::function<void(rmw_topic_endpoint_info_array_t *)>>
+  std::unique_ptr<
+      rmw_topic_endpoint_info_array_t, std::function<void(rmw_topic_endpoint_info_array_t *)>>
       endpoints_info_delete_on_error(
           endpoints_info, [allocator](rmw_topic_endpoint_info_array_t *p) {
             rmw_ret_t ret = rmw_topic_endpoint_info_array_fini(p, allocator);
             if (RMW_RET_OK != ret) {
-              RCUTILS_LOG_ERROR_NAMED(log_tag,
-                                      "Failed to destroy endpoints_info when function failed.");
+              RCUTILS_LOG_ERROR_NAMED(
+                  log_tag, "Failed to destroy endpoints_info when function failed.");
             }
           });
 
   // 遍历实体并根据主题名称筛选实体。
-  // Iterate through entities and filter them based on topic name.
   size_t i = 0;
   for (const auto &entity_pair : entities) {
     if (entity_pair.second.topic_name != topic_name) {
@@ -886,19 +887,16 @@ static rmw_ret_t __get_entities_info_by_topic(
     }
 
     // 获取当前端点信息引用。
-    // Get the current endpoint information reference.
     rmw_topic_endpoint_info_t &endpoint_info = endpoints_info->info_array[i];
     endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
 
     // 从实体 GID 中查找节点名称和命名空间。
-    // Find the node name and namespace from the entity GID.
     auto result = __find_name_and_namespace_from_entity_gid(
         participant_map, entity_pair.second.participant_gid, entity_pair.first, is_reader);
 
     std::string node_name;
     std::string node_namespace;
     // 根据端点创建者类型设置节点名称和命名空间。
-    // Set the node name and namespace based on the endpoint creator type.
     switch (std::get<2>(result)) {
       case EndpointCreator::ROS_NODE:
         node_name = std::move(std::get<0>(result));
@@ -915,22 +913,19 @@ static rmw_ret_t __get_entities_info_by_topic(
     }
 
     // 设置端点信息的节点名称。
-    // Set the node name for the endpoint information.
     ret = rmw_topic_endpoint_info_set_node_name(&endpoint_info, node_name.c_str(), allocator);
     if (RMW_RET_OK != ret) {
       return ret;
     }
 
     // 设置端点信息的节点命名空间。
-    // Set the node namespace for the endpoint information.
-    ret = rmw_topic_endpoint_info_set_node_namespace(&endpoint_info, node_namespace.c_str(),
-                                                     allocator);
+    ret = rmw_topic_endpoint_info_set_node_namespace(
+        &endpoint_info, node_namespace.c_str(), allocator);
     if (RMW_RET_OK != ret) {
       return ret;
     }
 
     // 设置端点信息的主题类型。
-    // Set the topic type for the endpoint information.
     ret = rmw_topic_endpoint_info_set_topic_type(
         &endpoint_info, demangle_type(entity_pair.second.topic_type).c_str(), allocator);
     if (RMW_RET_OK != ret) {
@@ -938,15 +933,13 @@ static rmw_ret_t __get_entities_info_by_topic(
     }
 
     // 设置端点信息的主题类型哈希。
-    // Set the topic type hash for the endpoint information.
-    ret = rmw_topic_endpoint_info_set_topic_type_hash(&endpoint_info,
-                                                      &entity_pair.second.topic_type_hash);
+    ret = rmw_topic_endpoint_info_set_topic_type_hash(
+        &endpoint_info, &entity_pair.second.topic_type_hash);
     if (RMW_RET_OK != ret) {
       return ret;
     }
 
     // 设置端点信息的端点类型（发布者或订阅者）。
-    // Set the endpoint type (publisher or subscriber) for the endpoint information.
     ret = rmw_topic_endpoint_info_set_endpoint_type(
         &endpoint_info, is_reader ? RMW_ENDPOINT_SUBSCRIPTION : RMW_ENDPOINT_PUBLISHER);
     if (RMW_RET_OK != ret) {
@@ -954,15 +947,13 @@ static rmw_ret_t __get_entities_info_by_topic(
     }
 
     // 设置端点信息的 GID。
-    // Set the GID for the endpoint information.
-    ret = rmw_topic_endpoint_info_set_gid(&endpoint_info, entity_pair.first.data,
-                                          RMW_GID_STORAGE_SIZE);
+    ret = rmw_topic_endpoint_info_set_gid(
+        &endpoint_info, entity_pair.first.data, RMW_GID_STORAGE_SIZE);
     if (RMW_RET_OK != ret) {
       return ret;
     }
 
     // 设置端点信息的 QoS 配置文件。
-    // Set the QoS profile for the endpoint information.
     ret = rmw_topic_endpoint_info_set_qos_profile(&endpoint_info, &entity_pair.second.qos);
     if (RMW_RET_OK != ret) {
       return ret;
@@ -996,8 +987,8 @@ rmw_ret_t GraphCache::get_writers_info_by_topic(
   // 对互斥量加锁，确保线程安全 (Lock the mutex to ensure thread safety)
   std::lock_guard<std::mutex> lock(mutex_);
   // 调用内部函数获取发布者信息 (Call the internal function to get the publisher information)
-  return __get_entities_info_by_topic(data_writers_, participants_, topic_name, demangle_type,
-                                      false, allocator, endpoints_info);
+  return __get_entities_info_by_topic(
+      data_writers_, participants_, topic_name, demangle_type, false, allocator, endpoints_info);
 }
 
 /**
@@ -1017,8 +1008,8 @@ rmw_ret_t GraphCache::get_readers_info_by_topic(
   // 对互斥量加锁，确保线程安全 (Lock the mutex to ensure thread safety)
   std::lock_guard<std::mutex> lock(mutex_);
   // 调用内部函数获取订阅者信息 (Call the internal function to get the subscriber information)
-  return __get_entities_info_by_topic(data_readers_, participants_, topic_name, demangle_type, true,
-                                      allocator, endpoints_info);
+  return __get_entities_info_by_topic(
+      data_readers_, participants_, topic_name, demangle_type, true, allocator, endpoints_info);
 }
 
 // 定义名称和类型映射结构 (Define name and type mapping structure)
@@ -1032,10 +1023,11 @@ using NamesAndTypes = std::map<std::string, std::set<std::string>>;
  * @param[in] demangle_type 类型反混淆函数 (Type demangling function)
  * @param[out] topics 主题名称和类型映射 (Topic name and type mapping)
  */
-static void __get_names_and_types(const GraphCache::EntityGidToInfo &entities,
-                                  DemangleFunctionT demangle_topic,
-                                  DemangleFunctionT demangle_type,
-                                  NamesAndTypes &topics) {
+static void __get_names_and_types(
+    const GraphCache::EntityGidToInfo &entities,
+    DemangleFunctionT demangle_topic,
+    DemangleFunctionT demangle_type,
+    NamesAndTypes &topics) {
   // 断言：检查输入参数是否非空 (Assert: Check if input parameters are non-null)
   assert(nullptr != demangle_topic);
   assert(nullptr != demangle_type);
@@ -1061,9 +1053,10 @@ static void __get_names_and_types(const GraphCache::EntityGidToInfo &entities,
  * topic names and types information)
  * @return rmw_ret_t 操作结果状态码 (Operation result status code)
  */
-static rmw_ret_t __populate_rmw_names_and_types(NamesAndTypes topics,
-                                                rcutils_allocator_t *allocator,
-                                                rmw_names_and_types_t *topic_names_and_types) {
+static rmw_ret_t __populate_rmw_names_and_types(
+    NamesAndTypes topics,
+    rcutils_allocator_t *allocator,
+    rmw_names_and_types_t *topic_names_and_types) {
   // 如果 topics 为空，直接返回成功状态码 (If topics is empty, return success status code directly)
   if (topics.empty()) {
     return RMW_RET_OK;
@@ -1088,8 +1081,8 @@ static rmw_ret_t __populate_rmw_names_and_types(NamesAndTypes topics,
     topic_names_and_types->names.data[index] = topic_name;
 
     {
-      rcutils_ret_t rcutils_ret = rcutils_string_array_init(&topic_names_and_types->types[index],
-                                                            item.second.size(), allocator);
+      rcutils_ret_t rcutils_ret = rcutils_string_array_init(
+          &topic_names_and_types->types[index], item.second.size(), allocator);
       if (RCUTILS_RET_OK != rcutils_ret) {
         RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
         rmw_ret = rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
@@ -1115,8 +1108,8 @@ static rmw_ret_t __populate_rmw_names_and_types(NamesAndTypes topics,
 cleanup:
   // 如果清理操作失败，则记录错误日志 (If the cleanup operation fails, log the error)
   if (RMW_RET_OK != rmw_names_and_types_fini(topic_names_and_types)) {
-    RCUTILS_LOG_ERROR_NAMED(log_tag, "error during report of error: %s",
-                            rmw_get_error_string().str);
+    RCUTILS_LOG_ERROR_NAMED(
+        log_tag, "error during report of error: %s", rmw_get_error_string().str);
   }
   return rmw_ret;
 }
@@ -1131,15 +1124,16 @@ cleanup:
  * structure that stores the obtained topic names and types）
  * @return rmw_ret_t 返回状态码（Return status code）
  */
-rmw_ret_t GraphCache::get_names_and_types(DemangleFunctionT demangle_topic,
-                                          DemangleFunctionT demangle_type,
-                                          rcutils_allocator_t *allocator,
-                                          rmw_names_and_types_t *topic_names_and_types) const {
+rmw_ret_t GraphCache::get_names_and_types(
+    DemangleFunctionT demangle_topic,
+    DemangleFunctionT demangle_type,
+    rcutils_allocator_t *allocator,
+    rmw_names_and_types_t *topic_names_and_types) const {
   // 检查参数有效性（Check parameter validity）
   assert(demangle_topic);
   assert(demangle_type);
-  RCUTILS_CHECK_ALLOCATOR_WITH_MSG(allocator, "get_node_names allocator is not valid",
-                                   return RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR_WITH_MSG(
+      allocator, "get_node_names allocator is not valid", return RMW_RET_INVALID_ARGUMENT);
   if (RMW_RET_OK != rmw_names_and_types_check_zero(topic_names_and_types)) {
     return RMW_RET_INVALID_ARGUMENT;
   }
@@ -1240,8 +1234,8 @@ static rmw_ret_t __get_names_and_types_by_node(
 
   // 检查分配器是否有效
   // Check if the allocator is valid
-  RCUTILS_CHECK_ALLOCATOR_WITH_MSG(allocator, "get_node_names allocator is not valid",
-                                   return RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR_WITH_MSG(
+      allocator, "get_node_names allocator is not valid", return RMW_RET_INVALID_ARGUMENT);
 
   // 检查 topic_names_and_types 是否为空
   // Check if topic_names_and_types is empty
@@ -1292,9 +1286,9 @@ rmw_ret_t GraphCache::get_writer_names_and_types_by_node(
 
   // 调用 __get_names_and_types_by_node 函数获取 writer 的名称和类型
   // Call the __get_names_and_types_by_node function to get the names and types of writers
-  return __get_names_and_types_by_node(participants_, data_writers_, node_name, namespace_,
-                                       demangle_topic, demangle_type, __get_writers_gids, allocator,
-                                       topic_names_and_types);
+  return __get_names_and_types_by_node(
+      participants_, data_writers_, node_name, namespace_, demangle_topic, demangle_type,
+      __get_writers_gids, allocator, topic_names_and_types);
 }
 
 // 定义一个静态函数 __get_readers_gids，用于获取节点的 reader GID 序列
@@ -1327,9 +1321,9 @@ rmw_ret_t GraphCache::get_reader_names_and_types_by_node(
   std::lock_guard<std::mutex> guard(mutex_);
   // 调用内部方法获取节点的读者名称和类型 (Call internal method to get reader names and types by
   // node)
-  return __get_names_and_types_by_node(participants_, data_readers_, node_name, namespace_,
-                                       demangle_topic, demangle_type, __get_readers_gids, allocator,
-                                       topic_names_and_types);
+  return __get_names_and_types_by_node(
+      participants_, data_readers_, node_name, namespace_, demangle_topic, demangle_type,
+      __get_readers_gids, allocator, topic_names_and_types);
 }
 
 /**
@@ -1372,10 +1366,11 @@ size_t GraphCache::get_number_of_nodes() const {
  * @param[in] allocator 分配器 Allocator
  * @return rmw_ret_t 返回状态 Return status
  */
-rmw_ret_t GraphCache::get_node_names(rcutils_string_array_t *node_names,
-                                     rcutils_string_array_t *node_namespaces,
-                                     rcutils_string_array_t *enclaves,
-                                     rcutils_allocator_t *allocator) const {
+rmw_ret_t GraphCache::get_node_names(
+    rcutils_string_array_t *node_names,
+    rcutils_string_array_t *node_namespaces,
+    rcutils_string_array_t *enclaves,
+    rcutils_allocator_t *allocator) const {
   // 加锁以保护共享数据
   // Lock to protect shared data
   std::lock_guard<std::mutex> guard(mutex_);
@@ -1394,8 +1389,8 @@ rmw_ret_t GraphCache::get_node_names(rcutils_string_array_t *node_names,
 
   // 检查分配器有效性
   // Check allocator validity
-  RCUTILS_CHECK_ALLOCATOR_WITH_MSG(allocator, "get_node_names allocator is not valid",
-                                   return RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR_WITH_MSG(
+      allocator, "get_node_names allocator is not valid", return RMW_RET_INVALID_ARGUMENT);
 
   // 获取节点数量
   // Get number of nodes
@@ -1468,19 +1463,22 @@ rmw_ret_t GraphCache::get_node_names(rcutils_string_array_t *node_names,
 fail:
   rcutils_ret = rcutils_string_array_fini(node_names);
   if (rcutils_ret != RCUTILS_RET_OK) {
-    RCUTILS_LOG_ERROR_NAMED("rmw_dds_common", "failed to cleanup during error handling: %s",
-                            rcutils_get_error_string().str);
+    RCUTILS_LOG_ERROR_NAMED(
+        "rmw_dds_common", "failed to cleanup during error handling: %s",
+        rcutils_get_error_string().str);
   }
   rcutils_ret = rcutils_string_array_fini(node_namespaces);
   if (rcutils_ret != RCUTILS_RET_OK) {
-    RCUTILS_LOG_ERROR_NAMED("rmw_dds_common", "failed to cleanup during error handling: %s",
-                            rcutils_get_error_string().str);
+    RCUTILS_LOG_ERROR_NAMED(
+        "rmw_dds_common", "failed to cleanup during error handling: %s",
+        rcutils_get_error_string().str);
   }
   if (enclaves) {
     rcutils_ret = rcutils_string_array_fini(enclaves);
     if (rcutils_ret != RCUTILS_RET_OK) {
-      RCUTILS_LOG_ERROR_NAMED("rmw_dds_common", "failed to cleanup during error handling: %s",
-                              rcutils_get_error_string().str);
+      RCUTILS_LOG_ERROR_NAMED(
+          "rmw_dds_common", "failed to cleanup during error handling: %s",
+          rcutils_get_error_string().str);
     }
   }
 
